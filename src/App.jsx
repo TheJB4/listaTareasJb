@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <>
-      <Container className="my-4">
+      <Container className="my-4 mainPage">
         <h1 className="text-center text-light display-3">Lista de tareas</h1>
       </Container>
       <Footer></Footer>
