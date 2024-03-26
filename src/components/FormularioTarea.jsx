@@ -10,7 +10,7 @@ const FormularioTarea = () => {
 
   useEffect(() => {
     //localStorage.setItem('tareasLocal', JSON.stringify(arrayTareas))
-    fetch('http://localhost:4001/api/todos')
+    fetch('https://lista-tareas-backend-gsm4.vercel.app/api/todos')
       .then((res) => res.json())
       .then(data => {
         setArrayTareas(data)
