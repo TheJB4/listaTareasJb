@@ -14,6 +14,7 @@ const FormularioTarea = () => {
       .then((res) => res.json())
       .then(data => {
         setArrayTareas(data)
+        location.href = '/'
       })
   }, [tarea])
 
