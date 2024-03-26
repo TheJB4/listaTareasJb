@@ -10,7 +10,7 @@ function App() {
       <Container className="my-4 mainPage">
         <h1 className="text-center text-light display-3">Lista de tareas</h1>
         <FormularioTarea></FormularioTarea>
-        <a href=""></a>
+
       </Container>
       <Footer></Footer>
     </>

@@ -6,29 +6,53 @@ import { useState, useEffect } from "react";
 
 const FormularioTarea = () => {
   const [tarea, setTarea] = useState("");
-  const tareasLocalStorage = JSON.parse(localStorage.getItem('tareasLocal')) || [];
-  console.log(tareasLocalStorage);
-  const [arrayTareas, setArrayTareas] = useState(tareasLocalStorage);
+  const [arrayTareas, setArrayTareas] = useState([]);
 
-  useEffect(()=>{
-    console.log('usando useEffect');
-    localStorage.setItem('tareasLocal', JSON.stringify(arrayTareas))
-  }, [arrayTareas])
+  useEffect(() => {
+    //localStorage.setItem('tareasLocal', JSON.stringify(arrayTareas))
+    fetch('http://localhost:4001/api/todos')
+      .then((res) => res.json())
+      .then(data => {
+        setArrayTareas(data)
+      })
+  }, [tarea])
 
   const handleSubmit = (e) => {
     e.preventDefault();
     //guardar el state tarea en el arrayTareas
     // spread ...
-    setArrayTareas([...arrayTareas, tarea])
-   //limpiar el formulario
-   setTarea('');
+    fetch('https://lista-tareas-backend-gsm4.vercel.app/api/todos', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        todo: tarea
+      })
+    })
+      .then((res) => res.json())
+      .then(data => {
+        console.log(data)
+        console.log(arrayTareas)
+      })
+    //limpiar el formulario
+    setTarea('');
   };
 
-  const borrarTarea = (nombreTarea)=>{
+  const borrarTarea = (id) => {
     //borramos una tarea
-    const arregloFiltrado = arrayTareas.filter((elementoTarea)=> elementoTarea !== nombreTarea);
+    fetch(`https://lista-tareas-backend-gsm4.vercel.app/api/todos/${id}`, {
+      method: 'DELETE',
+    })
+      .then((res) => res.json())
+      .then(data => {
+        console.log(data)
+        
+        alert(data.message)
+        setTarea('')
+        location.href = "/"
+      })
     //actualizo el state
-    setArrayTareas(arregloFiltrado)
   }
 
   return (
@@ -47,7 +71,7 @@ const FormularioTarea = () => {
           </Button>
         </Form.Group>
       </Form>
-      <ListaTareas arrayTareas={arrayTareas} borrarTarea={borrarTarea}></ListaTareas>
+       <ListaTareas arrayTareas={arrayTareas} borrarTarea={borrarTarea}></ListaTareas> 
     </section>
   );
 };
